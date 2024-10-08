@@ -16,6 +16,6 @@ python -m pip install socket
 python -m pip install colorama
 ```
 
-## Usage
+## Summary
 
 If you like the tool, make sure to give it a star and recommend it to a friend. Any constructive criticism is welcome and I encourage feedback.
