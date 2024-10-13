@@ -1,5 +1,5 @@
 # WOT (Who's Out There?)
-WOT is a simple host discovery tool made in Python. With this tool, you are granted the ability to scan your entire subnet quickly with ease.
+WOT (Who's Out There?) is a simple host discovery tool made in Python. With this tool, you are granted the ability to scan your entire subnet quickly with ease.
 # Application Usage
 ## Arguments
 - T I - Target (single or entire network), interface.
