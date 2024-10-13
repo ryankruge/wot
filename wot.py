@@ -1,5 +1,8 @@
 from main import *
 
+REQUIRED = [ '-t', '-i' ]
+CONFIGURABLE = [ '-t', '-i' ]
+
 HELP_MESSAGE = f"""WOT ({colorama.Fore.RED}Who's Out There?{colorama.Fore.WHITE}):
 A simple tool for host discovery.
 
@@ -10,23 +13,21 @@ A simple tool for host discovery.
 [Optional]:
 {colorama.Style.DIM}[{colorama.Style.RESET_ALL}-h{colorama.Style.DIM}]{colorama.Style.RESET_ALL} Print the help display."""
 
-REQUIRED = [ '-t', '-i' ]
-
 try:
-	parameters = { 'Help': False, 'Target': None, 'Interface': None }
-
 	if '-h' in sys.argv:
-		PrintHelp(HELP_MESSAGE)
+		print(HELP_MESSAGE)
+		sys.exit()
 
 	if not VerifyRequired(sys.argv, REQUIRED):
 		PrintMessage("Failure to verify provided flags. Please ensure you have included required criteria.")
 		sys.exit()
 
-	parameters = PopulateParameters(parameters, sys.argv)
+	parameters = { '-t': None, '-i': None }
+	parameters = PopulateParameters(sys.argv, CONFIGURABLE, parameters)
 
 	discovery = Discovery(
-		parameters["Target"], 
-		parameters["Interface"]
+		parameters['-t'], 
+		parameters['-i']
 	)
 
 	hosts = discovery.GetHosts()
@@ -46,7 +47,6 @@ try:
 			colorama.Style.DIM,
 			colorama.Style.RESET_ALL
 		))
-except OSError:
-	PrintMessage("There was an operating system failure detected.")
-except ValueError:
-	PrintMessage("There was an error with one of the fields provided.")
+except KeyboardInterrupt:
+	PrintMessage("Received halt signal. Exiting gracefully.")
+	sys.exit()

@@ -19,24 +19,31 @@ class Discovery:
 		return addresses
 
 	def ReverseDNS(self, host):
-		return socket.gethostbyaddr(host)[0]
+		try:
+			hostname = socket.gethostbyaddr(host)[0]
+			return hostname
+		except socket.herror:
+			return
 
 def PrintMessage(message):
-		print(f"{colorama.Style.DIM}[{colorama.Style.RESET_ALL}*{colorama.Style.DIM}]{colorama.Style.RESET_ALL} {message}")
+	print("{}[{}*{}]{} {}".format(
+		colorama.Style.DIM,
+		colorama.Style.RESET_ALL,
+		colorama.Style.DIM,
+		colorama.Style.RESET_ALL,
+		message
+	))
 
-def PrintHelp(message):
-	print(message)
-	sys.exit()
-
-def PopulateParameters(parameters, arguments):
-	temporary = parameters
-	for argument in range(0, len(arguments)):
-		match arguments[argument]:
-			case '-t':
-				temporary['Target'] = arguments[argument + 1]
-			case '-i':
-				temporary['Interface'] = arguments[argument + 1]
-	return temporary
+def PopulateParameters(arguments, flags, dictionary):
+	try:
+		temporary = dictionary
+		for argument in range(0, len(arguments)):
+			if arguments[argument] in flags:
+				dictionary[arguments[argument]] = arguments[argument + 1]
+		return temporary
+	except TypeError:
+		PrintMessage("There was an error whilst populating the parameter list.")
+		sys.exit()
 
 def VerifyRequired(arguments, required):
 	for argument in required:
